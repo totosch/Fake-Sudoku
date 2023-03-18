@@ -97,7 +97,9 @@ public class Main {
 		int sumOfSecondBatchNumbers = 0;
 		int[] secondBatchOfRandomNumbers = new int[4];
 
-		while (sumOfSecondBatchNumbers <= (sum - maxNumber) || sumOfSecondBatchNumbers > sum
+		while (sumOfSecondBatchNumbers <= (sum - maxNumber) 
+				&& sumOfSecondBatchNumbers < sum - minNumber
+				|| sumOfSecondBatchNumbers > sum
 				|| sumOfSecondBatchNumbers == 0) {
 			sumOfSecondBatchNumbers = 0;
 			for (int i = 0; i < lengthOfRandomNumberArray - 1; i++) {
