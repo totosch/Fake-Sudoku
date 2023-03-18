@@ -50,7 +50,6 @@ public class Main {
 		textField.setColumns(10);
 
 		// 8 random numbers that will become the player's objective
-
 		Random randomNumber = new Random();
 		int[] numbers = new int[8];
 
@@ -59,9 +58,7 @@ public class Main {
 			numbers[i] = num;
 		}
 
-		// end of generating random numbers
-
-
+		// generating the textFields for the inputs of the player
 		ArrayList<JTextField> textFieldList = new ArrayList<>();
 
 		for (int i = 0; i < 23; i++) {
@@ -69,30 +66,29 @@ public class Main {
 			textFieldList.add(textField);
 		}
 
-		int[] textFieldsWithRandomNumbers = { 3, 8, 13, 18, 19, 20, 21, 22 };
+		// this arrays contains the textFields in the ArrayList where we should place
+		// the 8 random values
+		int[] textFieldsWithFirstBatch = { 3, 8, 13, 18 };
+		int[] textFieldsWithSecondBatch = { 19, 20, 21, 22 };
 
-		
-		for (int i = 0; i < textFieldsWithRandomNumbers.length; i++) {
-			int indexOfRandomPosition = textFieldsWithRandomNumbers[i];
-			textFieldList.get(indexOfRandomPosition).setText(Integer.toString(numbers[i]));
-		}
-
+		// generating a button to check for the win
 		JButton checkButton = new JButton("Check!");
 
+		// adding the button and the textFields to the frame
 		for (JTextField textFields : textFieldList) {
 			frame.getContentPane().add(textFields);
 		}
 		frame.getContentPane().add(checkButton);
-		
+
 		Random rand = new Random();
 		int[] firstBatchOfRandomNumbers = new int[4];
 		int lengthOfRandomNumberArray = firstBatchOfRandomNumbers.length;
 		int sum = 0;
 
+		// we used 5 and 15 to create a range between them
 		int minNumber = 5;
 		int maxNumber = 15;
 
-		// Generate 4 random numbers
 		for (int i = 0; i < lengthOfRandomNumberArray; i++) {
 			firstBatchOfRandomNumbers[i] = rand.nextInt(maxNumber - minNumber + 1) + minNumber;
 			sum += firstBatchOfRandomNumbers[i];
@@ -100,40 +96,30 @@ public class Main {
 
 		int sumOfSecondBatchNumbers = 0;
 		int[] secondBatchOfRandomNumbers = new int[4];
-		
-		System.out.println("pppppp" + (sum - maxNumber));
 
 		while (sumOfSecondBatchNumbers <= (sum - maxNumber) || sumOfSecondBatchNumbers > sum
 				|| sumOfSecondBatchNumbers == 0) {
 			sumOfSecondBatchNumbers = 0;
 			for (int i = 0; i < lengthOfRandomNumberArray - 1; i++) {
-				secondBatchOfRandomNumbers[i] = rand.nextInt(maxNumber - minNumber  + 1) + minNumber;
+				secondBatchOfRandomNumbers[i] = rand.nextInt(maxNumber - minNumber + 1) + minNumber;
 				sumOfSecondBatchNumbers += secondBatchOfRandomNumbers[i];
 			}
 
-			System.out.println("numbers" + sumOfSecondBatchNumbers);
-			System.out.println("totalSum" + sum);
 		}
 
 		secondBatchOfRandomNumbers[lengthOfRandomNumberArray - 1] = sum - sumOfSecondBatchNumbers;
 
 		sumOfSecondBatchNumbers += secondBatchOfRandomNumbers[lengthOfRandomNumberArray - 1];
 
-		System.out.println("first" + Arrays.toString(firstBatchOfRandomNumbers));
-		System.out.println('s' + Arrays.toString(secondBatchOfRandomNumbers));
+		for (int i = 0; i < textFieldsWithFirstBatch.length; i++) {
+			int indexOfRandomPosition = textFieldsWithFirstBatch[i];
+			textFieldList.get(indexOfRandomPosition).setText(Integer.toString(firstBatchOfRandomNumbers[i]));
+		}
 
-		// 50: 10 - 11 - 14. 50 - 33: 15
-
-		// Si la suma dividido 4 es mayor a alguno de los numeros que tenemos no
-		// permitir que sea ese numero
-		// desde que numero random? = (suma / cantidad de elementos) - ( numero mas
-		// chico / 2 )
-
-		// Generar ocho numeros random para sumarlos. La suma la dividis por dos. El
-		// resultado de la division es lo que suma cada lado.
-		//
-
-		System.out.println(sum);
+		for (int i = 0; i < textFieldsWithSecondBatch.length; i++) {
+			int indexOfRandomPosition = textFieldsWithSecondBatch[i];
+			textFieldList.get(indexOfRandomPosition).setText(Integer.toString(secondBatchOfRandomNumbers[i]));
+		}
 
 	}
 }
