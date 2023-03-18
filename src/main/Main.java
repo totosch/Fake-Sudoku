@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JTextField;
 import java.util.Random;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Main {
 
@@ -82,6 +83,57 @@ public class Main {
 			frame.getContentPane().add(textFields);
 		}
 		frame.getContentPane().add(checkButton);
+		
+		Random rand = new Random();
+		int[] firstBatchOfRandomNumbers = new int[4];
+		int lengthOfRandomNumberArray = firstBatchOfRandomNumbers.length;
+		int sum = 0;
+
+		int minNumber = 5;
+		int maxNumber = 15;
+
+		// Generate 4 random numbers
+		for (int i = 0; i < lengthOfRandomNumberArray; i++) {
+			firstBatchOfRandomNumbers[i] = rand.nextInt(maxNumber - minNumber + 1) + minNumber;
+			sum += firstBatchOfRandomNumbers[i];
+		}
+
+		int sumOfSecondBatchNumbers = 0;
+		int[] secondBatchOfRandomNumbers = new int[4];
+		
+		System.out.println("pppppp" + (sum - maxNumber));
+
+		while (sumOfSecondBatchNumbers <= (sum - maxNumber) || sumOfSecondBatchNumbers > sum
+				|| sumOfSecondBatchNumbers == 0) {
+			sumOfSecondBatchNumbers = 0;
+			for (int i = 0; i < lengthOfRandomNumberArray - 1; i++) {
+				secondBatchOfRandomNumbers[i] = rand.nextInt(maxNumber - minNumber  + 1) + minNumber;
+				sumOfSecondBatchNumbers += secondBatchOfRandomNumbers[i];
+			}
+
+			System.out.println("numbers" + sumOfSecondBatchNumbers);
+			System.out.println("totalSum" + sum);
+		}
+
+		secondBatchOfRandomNumbers[lengthOfRandomNumberArray - 1] = sum - sumOfSecondBatchNumbers;
+
+		sumOfSecondBatchNumbers += secondBatchOfRandomNumbers[lengthOfRandomNumberArray - 1];
+
+		System.out.println("first" + Arrays.toString(firstBatchOfRandomNumbers));
+		System.out.println('s' + Arrays.toString(secondBatchOfRandomNumbers));
+
+		// 50: 10 - 11 - 14. 50 - 33: 15
+
+		// Si la suma dividido 4 es mayor a alguno de los numeros que tenemos no
+		// permitir que sea ese numero
+		// desde que numero random? = (suma / cantidad de elementos) - ( numero mas
+		// chico / 2 )
+
+		// Generar ocho numeros random para sumarlos. La suma la dividis por dos. El
+		// resultado de la division es lo que suma cada lado.
+		//
+
+		System.out.println(sum);
 
 	}
 }
