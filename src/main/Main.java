@@ -8,7 +8,6 @@ import javax.swing.JFrame;
 import javax.swing.JTextField;
 import java.util.Random;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Main {
 

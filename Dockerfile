@@ -6,4 +6,4 @@ COPY . /app
 
 RUN javac -cp ".:/app/lib/*" /app/src/main/Main.java
 
-CMD ["java", "-cp", ".:/app/lib/*:/app/src/main", "Main"]
+CMD ["java", "-cp", ".:/app/lib/*:/app/src", "main.Main"]
