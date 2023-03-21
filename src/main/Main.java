@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.GridLayout;
 
 import javax.swing.JButton;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.SwingConstants;
 
 public class Main {
 
@@ -47,6 +49,8 @@ public class Main {
 		frame.getContentPane().setLayout(new GridLayout(5, 5));
 
 		textField = new JTextField();
+		textField.setHorizontalAlignment(SwingConstants.CENTER);
+		textField.setFont(new Font(textField.getFont().getName(), Font.BOLD, textField.getFont().getSize()));
 
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
@@ -65,6 +69,8 @@ public class Main {
 
 		for (int i = 0; i < 23; i++) {
 			JTextField textField = new JTextField();
+			textField.setHorizontalAlignment(SwingConstants.CENTER);
+			textField.setFont(new Font(textField.getFont().getName(), Font.BOLD, textField.getFont().getSize()));
 			textFieldList.add(textField);
 		}
 
@@ -97,12 +103,12 @@ public class Main {
 				int firstRow = firstValue + secondValue + thirdValue + fourthValue;
 
 				if (firstRow == firstObjective) {
-					textField.setBackground(Color.YELLOW);
+					txtHola.setBackground(Color.YELLOW);
 					textFieldList.get(0).setBackground(Color.YELLOW);
 					textFieldList.get(1).setBackground(Color.YELLOW);
 					textFieldList.get(2).setBackground(Color.YELLOW);
 				} else {
-					textField.setBackground(Color.WHITE);
+					txtHola.setBackground(Color.WHITE);
 					textFieldList.get(0).setBackground(Color.WHITE);
 					textFieldList.get(1).setBackground(Color.WHITE);
 					textFieldList.get(2).setBackground(Color.WHITE);
