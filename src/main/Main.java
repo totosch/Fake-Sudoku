@@ -75,7 +75,7 @@ public class Main {
 		}
 
 		// generating a button to check for the win
-		
+
 		// changing color of Objectives to make it prettier
 		textFieldList.get(3).setBackground(Color.BLUE);
 		textFieldList.get(8).setBackground(Color.BLUE);
@@ -85,45 +85,85 @@ public class Main {
 		textFieldList.get(20).setBackground(Color.BLUE);
 		textFieldList.get(21).setBackground(Color.BLUE);
 		textFieldList.get(22).setBackground(Color.BLUE);
-		
-		
 
 		JButton checkButton = new JButton("Check!");
 
 		checkButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				// start calculating the firstRow and compare with firstObjective
-				int firstValue = Integer.parseInt(textField.getText());
-				int secondValue = Integer.parseInt(textFieldList.get(0).getText());
-				int thirdValue = Integer.parseInt(textFieldList.get(1).getText());
-				int fourthValue = Integer.parseInt(textFieldList.get(2).getText());
+				// values of the 16 squares that the user has input
+				
+				//btw this looks like ass
+
+				int[] inputValues = new int[16];
+				inputValues[0] = Integer.parseInt(textField.getText());
+				for (int i = 0; i < 15; i++) {
+				    inputValues[i+1] = Integer.parseInt(textFieldList.get(i).getText());
+				}
+
+				// calculating the row's objectives
 
 				int firstObjective = Integer.parseInt(textFieldList.get(3).getText());
-				int firstRow = firstValue + secondValue + thirdValue + fourthValue;
+				int secondObjective = Integer.parseInt(textFieldList.get(8).getText());
+				int thirdObjective = Integer.parseInt(textFieldList.get(13).getText());
+				int fourthObjective = Integer.parseInt(textFieldList.get(18).getText());
 
-				if (firstRow == firstObjective) {
-					txtHola.setBackground(Color.YELLOW);
+				// calculating the row's values
+
+				int[] rowSums = new int[4];
+				for (int i = 0; i < 4; i++) {
+				    int index = i * 4; 
+				    for (int j = 0; j < 4; j++) {
+				        rowSums[i] += inputValues[index + j];
+				    }
+				}
+				int firstRow = rowSums[0];
+				int secondRow = rowSums[1];
+				int thirdRow = rowSums[2];
+				int fourthRow = rowSums[3];
+
+
+				// calculating the column's objective
+
+				int firstColumnObjective = Integer.parseInt(textFieldList.get(19).getText());
+				int secondColumnObjective = Integer.parseInt(textFieldList.get(20).getText());
+				int thirdColumnObjective = Integer.parseInt(textFieldList.get(21).getText());
+				int fourthColumnObjective = Integer.parseInt(textFieldList.get(22).getText());
+
+				// calculating the column's values
+
+				int[] colSums = new int[4];
+				for (int i = 0; i < 4; i++) {
+				    for (int j = 0; j < 4; j++) {
+				        int index = j * 4; // starting index of the column
+				        colSums[i] += inputValues[index + i];
+				    }
+				}
+				int firstColumn = colSums[0];
+				int secondColumn = colSums[1];
+				int thirdColumn = colSums[2];
+				int fourthColumn = colSums[3];
+
+
+				// validating wip
+
+				// validating the first row
+
+				if (firstRow == firstObjective && firstColumn == firstColumnObjective) {
+					textField.setBackground(Color.YELLOW);
 					textFieldList.get(0).setBackground(Color.YELLOW);
 					textFieldList.get(1).setBackground(Color.YELLOW);
 					textFieldList.get(2).setBackground(Color.YELLOW);
 				} else {
-					txtHola.setBackground(Color.WHITE);
+					textField.setBackground(Color.WHITE);
 					textFieldList.get(0).setBackground(Color.WHITE);
 					textFieldList.get(1).setBackground(Color.WHITE);
 					textFieldList.get(2).setBackground(Color.WHITE);
 				}
 
-				// start calculating the secondRow and compare with secondObjective
-				int fifthValue = Integer.parseInt(textFieldList.get(4).getText());
-				int sixthValue = Integer.parseInt(textFieldList.get(5).getText());
-				int seventhValue = Integer.parseInt(textFieldList.get(6).getText());
-				int eightValue = Integer.parseInt(textFieldList.get(7).getText());
+				// validating the second row
 
-				int secondObjective = Integer.parseInt(textFieldList.get(8).getText());
-				int secondRow = fifthValue + sixthValue + seventhValue + eightValue;
-
-				if (secondRow == secondObjective) {
+				if (secondRow == secondObjective && secondColumn == secondColumnObjective) {
 					textFieldList.get(4).setBackground(Color.YELLOW);
 					textFieldList.get(5).setBackground(Color.YELLOW);
 					textFieldList.get(6).setBackground(Color.YELLOW);
@@ -135,16 +175,9 @@ public class Main {
 					textFieldList.get(7).setBackground(Color.WHITE);
 				}
 
-				// start calculating the thridRow and compare with thirdObjective
-				int ninthValue = Integer.parseInt(textFieldList.get(9).getText());
-				int tenthValue = Integer.parseInt(textFieldList.get(10).getText());
-				int eleventhValue = Integer.parseInt(textFieldList.get(11).getText());
-				int twelveValue = Integer.parseInt(textFieldList.get(12).getText());
+				// validating the third row
 
-				int thirdObjective = Integer.parseInt(textFieldList.get(13).getText());
-				int thirdRow = ninthValue + tenthValue + eleventhValue + twelveValue;
-
-				if (thirdRow == thirdObjective) {
+				if (thirdRow == thirdObjective && thirdColumn == thirdColumnObjective) {
 					textFieldList.get(9).setBackground(Color.YELLOW);
 					textFieldList.get(10).setBackground(Color.YELLOW);
 					textFieldList.get(11).setBackground(Color.YELLOW);
@@ -156,16 +189,9 @@ public class Main {
 					textFieldList.get(12).setBackground(Color.WHITE);
 				}
 
-				// start calculating the thridRow and compare with thirdObjective
-				int thirteenValue = Integer.parseInt(textFieldList.get(14).getText());
-				int fourteenValue = Integer.parseInt(textFieldList.get(15).getText());
-				int fifteenValue = Integer.parseInt(textFieldList.get(16).getText());
-				int sixteenValue = Integer.parseInt(textFieldList.get(17).getText());
+				// validating the fourth row
 
-				int fourthObjective = Integer.parseInt(textFieldList.get(18).getText());
-				int fourthRow = thirteenValue + fourteenValue + fifteenValue + sixteenValue;
-
-				if (fourthRow == fourthObjective) {
+				if (fourthRow == fourthObjective && fourthColumn == fourthColumnObjective) {
 					textFieldList.get(14).setBackground(Color.YELLOW);
 					textFieldList.get(15).setBackground(Color.YELLOW);
 					textFieldList.get(16).setBackground(Color.YELLOW);
