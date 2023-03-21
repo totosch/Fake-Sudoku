@@ -8,7 +8,6 @@ import javax.swing.JFrame;
 import javax.swing.JTextField;
 import java.util.Random;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Main {
 
@@ -79,39 +78,13 @@ public class Main {
 			frame.getContentPane().add(textFields);
 		}
 		frame.getContentPane().add(checkButton);
+		
+		RandomNumberSumGenerator numberGenerator = new RandomNumberSumGenerator(5, 15, 4);
 
-		Random rand = new Random();
-		int[] firstBatchOfRandomNumbers = new int[4];
-		int lengthOfRandomNumberArray = firstBatchOfRandomNumbers.length;
-		int sum = 0;
+		int[] firstBatchOfRandomNumbers = numberGenerator.generateRandomNumbersAndItsSum();
 
-		// we used 5 and 15 to create a range between them
-		int minNumber = 5;
-		int maxNumber = 15;
-
-		for (int i = 0; i < lengthOfRandomNumberArray; i++) {
-			firstBatchOfRandomNumbers[i] = rand.nextInt(maxNumber - minNumber + 1) + minNumber;
-			sum += firstBatchOfRandomNumbers[i];
-		}
-
-		int sumOfSecondBatchNumbers = 0;
-		int[] secondBatchOfRandomNumbers = new int[4];
-
-		while (sumOfSecondBatchNumbers <= (sum - maxNumber) 
-				&& sumOfSecondBatchNumbers < sum - minNumber
-				|| sumOfSecondBatchNumbers > sum
-				|| sumOfSecondBatchNumbers == 0) {
-			sumOfSecondBatchNumbers = 0;
-			for (int i = 0; i < lengthOfRandomNumberArray - 1; i++) {
-				secondBatchOfRandomNumbers[i] = rand.nextInt(maxNumber - minNumber + 1) + minNumber;
-				sumOfSecondBatchNumbers += secondBatchOfRandomNumbers[i];
-			}
-
-		}
-
-		secondBatchOfRandomNumbers[lengthOfRandomNumberArray - 1] = sum - sumOfSecondBatchNumbers;
-
-		sumOfSecondBatchNumbers += secondBatchOfRandomNumbers[lengthOfRandomNumberArray - 1];
+		int[] secondBatchOfRandomNumbers = numberGenerator.generateRandomNumberMeetingSum();
+		
 
 		for (int i = 0; i < textFieldsWithFirstBatch.length; i++) {
 			int indexOfRandomPosition = textFieldsWithFirstBatch[i];
@@ -122,6 +95,8 @@ public class Main {
 			int indexOfRandomPosition = textFieldsWithSecondBatch[i];
 			textFieldList.get(indexOfRandomPosition).setText(Integer.toString(secondBatchOfRandomNumbers[i]));
 		}
+		
+		System.out.println("hola");
 
 	}
 }
