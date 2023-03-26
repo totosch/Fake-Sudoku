@@ -236,22 +236,20 @@ public class Main {
 			sum += firstBatchOfRandomNumbers[i];
 		}
 
-		int sumOfSecondBatchNumbers = 0;
+		int sumOfNewArray = 0;
 		int[] secondBatchOfRandomNumbers = new int[4];
 
-		while (sumOfSecondBatchNumbers <= (sum - maxNumber) && sumOfSecondBatchNumbers < sum - minNumber
-				|| sumOfSecondBatchNumbers > sum || sumOfSecondBatchNumbers == 0) {
-			sumOfSecondBatchNumbers = 0;
+		while (!((sum - sumOfNewArray) >= minNumber && (sum - sumOfNewArray) <= maxNumber) || sumOfNewArray == 0) {
+			sumOfNewArray = 0;
 			for (int i = 0; i < lengthOfRandomNumberArray - 1; i++) {
 				secondBatchOfRandomNumbers[i] = rand.nextInt(maxNumber - minNumber + 1) + minNumber;
-				sumOfSecondBatchNumbers += secondBatchOfRandomNumbers[i];
+				sumOfNewArray += secondBatchOfRandomNumbers[i];
 			}
-
 		}
 
-		secondBatchOfRandomNumbers[lengthOfRandomNumberArray - 1] = sum - sumOfSecondBatchNumbers;
+		secondBatchOfRandomNumbers[lengthOfRandomNumberArray - 1] = sum - sumOfNewArray;
 
-		sumOfSecondBatchNumbers += secondBatchOfRandomNumbers[lengthOfRandomNumberArray - 1];
+		sumOfNewArray += secondBatchOfRandomNumbers[lengthOfRandomNumberArray - 1];
 
 		for (int i = 0; i < textFieldsWithFirstBatch.length; i++) {
 			int indexOne = textFieldsWithFirstBatch[i];
