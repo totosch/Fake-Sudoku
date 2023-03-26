@@ -52,7 +52,6 @@ public class Main {
 		textField.setHorizontalAlignment(SwingConstants.CENTER);
 		textField.setFont(new Font(textField.getFont().getName(), Font.BOLD, textField.getFont().getSize()));
 
-		frame.getContentPane().add(textField);
 		textField.setColumns(10);
 
 		// 8 random numbers that will become the player's objective
@@ -67,7 +66,7 @@ public class Main {
 		// generating the textFields for the inputs of the player
 		ArrayList<JTextField> textFieldList = new ArrayList<>();
 
-		for (int i = 0; i < 23; i++) {
+		for (int i = 0; i < 24; i++) {
 			JTextField textField = new JTextField();
 			textField.setHorizontalAlignment(SwingConstants.CENTER);
 			textField.setFont(new Font(textField.getFont().getName(), Font.BOLD, textField.getFont().getSize()));
@@ -77,14 +76,14 @@ public class Main {
 		// generating a button to check for the win
 
 		// changing color of Objectives to make it prettier
-		textFieldList.get(3).setBackground(Color.BLUE);
-		textFieldList.get(8).setBackground(Color.BLUE);
-		textFieldList.get(13).setBackground(Color.BLUE);
-		textFieldList.get(18).setBackground(Color.BLUE);
-		textFieldList.get(19).setBackground(Color.BLUE);
-		textFieldList.get(20).setBackground(Color.BLUE);
-		textFieldList.get(21).setBackground(Color.BLUE);
-		textFieldList.get(22).setBackground(Color.BLUE);
+		textFieldList.get(4).setBackground(Color.CYAN);
+		textFieldList.get(9).setBackground(Color.CYAN);
+		textFieldList.get(14).setBackground(Color.CYAN);
+		textFieldList.get(19).setBackground(Color.CYAN);
+		textFieldList.get(20).setBackground(Color.CYAN);
+		textFieldList.get(21).setBackground(Color.CYAN);
+		textFieldList.get(22).setBackground(Color.CYAN);
+		textFieldList.get(23).setBackground(Color.CYAN);
 
 		JButton checkButton = new JButton("Check!");
 
@@ -92,115 +91,120 @@ public class Main {
 			public void actionPerformed(ActionEvent e) {
 
 				// values of the 16 squares that the user has input
-				
-				//btw this looks like ass
 
-				int[] inputValues = new int[16];
-				inputValues[0] = Integer.parseInt(textField.getText());
-				for (int i = 0; i < 15; i++) {
-				    inputValues[i+1] = Integer.parseInt(textFieldList.get(i).getText());
+				int[] inputValues = new int[24];
+				for (int i = 0; i < 24; i++) {
+					inputValues[i] = Integer.parseInt(textFieldList.get(i).getText());
 				}
 
 				// calculating the row's objectives
-
-				int firstObjective = Integer.parseInt(textFieldList.get(3).getText());
-				int secondObjective = Integer.parseInt(textFieldList.get(8).getText());
-				int thirdObjective = Integer.parseInt(textFieldList.get(13).getText());
-				int fourthObjective = Integer.parseInt(textFieldList.get(18).getText());
+				int[] rowObjectives = { Integer.parseInt(textFieldList.get(4).getText()),
+						Integer.parseInt(textFieldList.get(9).getText()),
+						Integer.parseInt(textFieldList.get(14).getText()),
+						Integer.parseInt(textFieldList.get(19).getText()) };
 
 				// calculating the row's values
 
 				int[] rowSums = new int[4];
 				for (int i = 0; i < 4; i++) {
-				    int index = i * 4; 
-				    for (int j = 0; j < 4; j++) {
-				        rowSums[i] += inputValues[index + j];
-				    }
+					int index = i * 5;
+					for (int j = 0; j < 4; j++) {
+						rowSums[i] += inputValues[index + j];
+					}
 				}
+
 				int firstRow = rowSums[0];
 				int secondRow = rowSums[1];
 				int thirdRow = rowSums[2];
 				int fourthRow = rowSums[3];
 
-
 				// calculating the column's objective
 
-				int firstColumnObjective = Integer.parseInt(textFieldList.get(19).getText());
-				int secondColumnObjective = Integer.parseInt(textFieldList.get(20).getText());
-				int thirdColumnObjective = Integer.parseInt(textFieldList.get(21).getText());
-				int fourthColumnObjective = Integer.parseInt(textFieldList.get(22).getText());
+				int[] colObjectives = { Integer.parseInt(textFieldList.get(20).getText()),
+						Integer.parseInt(textFieldList.get(21).getText()),
+						Integer.parseInt(textFieldList.get(22).getText()),
+						Integer.parseInt(textFieldList.get(23).getText()) };
 
 				// calculating the column's values
 
 				int[] colSums = new int[4];
 				for (int i = 0; i < 4; i++) {
-				    for (int j = 0; j < 4; j++) {
-				        int index = j * 4; // starting index of the column
-				        colSums[i] += inputValues[index + i];
-				    }
+					for (int j = 0; j < 4; j++) {
+						int index = j * 5;
+						colSums[i] += inputValues[index + i];
+					}
 				}
 				int firstColumn = colSums[0];
 				int secondColumn = colSums[1];
 				int thirdColumn = colSums[2];
 				int fourthColumn = colSums[3];
 
-
 				// validating wip
 
 				// validating the first row
 
-				if (firstRow == firstObjective && firstColumn == firstColumnObjective) {
-					textField.setBackground(Color.YELLOW);
-					textFieldList.get(0).setBackground(Color.YELLOW);
-					textFieldList.get(1).setBackground(Color.YELLOW);
-					textFieldList.get(2).setBackground(Color.YELLOW);
+				if (firstRow == rowObjectives[0] 
+						&& firstColumn == colObjectives[0] 
+						&& secondColumn == colObjectives[1]
+						&& thirdColumn == colObjectives[2] 
+						&& fourthColumn == colObjectives[3]) {
+					for (int i = 0; i < 4; i++) {
+						JTextField textFields = textFieldList.get(i);
+						textFields.setBackground(Color.GREEN);
+					}
 				} else {
-					textField.setBackground(Color.WHITE);
-					textFieldList.get(0).setBackground(Color.WHITE);
-					textFieldList.get(1).setBackground(Color.WHITE);
-					textFieldList.get(2).setBackground(Color.WHITE);
+					for (int i = 0; i < 4; i++) {
+						JTextField textField = textFieldList.get(i);
+						textField.setBackground(Color.WHITE);
+					}
 				}
 
-				// validating the second row
-
-				if (secondRow == secondObjective && secondColumn == secondColumnObjective) {
-					textFieldList.get(4).setBackground(Color.YELLOW);
-					textFieldList.get(5).setBackground(Color.YELLOW);
-					textFieldList.get(6).setBackground(Color.YELLOW);
-					textFieldList.get(7).setBackground(Color.YELLOW);
+				if (secondRow == rowObjectives[1] 
+						&& firstColumn == colObjectives[0] 
+						&& secondColumn == colObjectives[1]
+						&& thirdColumn == colObjectives[2] 
+						&& fourthColumn == colObjectives[3]) {
+					for (int i = 5; i < 9; i++) {
+						JTextField textFields = textFieldList.get(i);
+						textFields.setBackground(Color.GREEN);
+					}
 				} else {
-					textFieldList.get(4).setBackground(Color.WHITE);
-					textFieldList.get(5).setBackground(Color.WHITE);
-					textFieldList.get(6).setBackground(Color.WHITE);
-					textFieldList.get(7).setBackground(Color.WHITE);
+					for (int i = 5; i < 9; i++) {
+						JTextField textField = textFieldList.get(i);
+						textField.setBackground(Color.WHITE);
+					}
 				}
 
-				// validating the third row
-
-				if (thirdRow == thirdObjective && thirdColumn == thirdColumnObjective) {
-					textFieldList.get(9).setBackground(Color.YELLOW);
-					textFieldList.get(10).setBackground(Color.YELLOW);
-					textFieldList.get(11).setBackground(Color.YELLOW);
-					textFieldList.get(12).setBackground(Color.YELLOW);
+				if (thirdRow == rowObjectives[2] 
+						&& firstColumn == colObjectives[0] 
+						&& secondColumn == colObjectives[1]
+						&& thirdColumn == colObjectives[2] 
+						&& fourthColumn == colObjectives[3]) {
+					for (int i = 10; i < 14; i++) {
+						JTextField textFields = textFieldList.get(i);
+						textFields.setBackground(Color.GREEN);
+					}
 				} else {
-					textFieldList.get(9).setBackground(Color.WHITE);
-					textFieldList.get(10).setBackground(Color.WHITE);
-					textFieldList.get(11).setBackground(Color.WHITE);
-					textFieldList.get(12).setBackground(Color.WHITE);
+					for (int i = 10; i < 14; i++) {
+						JTextField textField = textFieldList.get(i);
+						textField.setBackground(Color.WHITE);
+					}
 				}
 
-				// validating the fourth row
-
-				if (fourthRow == fourthObjective && fourthColumn == fourthColumnObjective) {
-					textFieldList.get(14).setBackground(Color.YELLOW);
-					textFieldList.get(15).setBackground(Color.YELLOW);
-					textFieldList.get(16).setBackground(Color.YELLOW);
-					textFieldList.get(17).setBackground(Color.YELLOW);
+				if (fourthRow == rowObjectives[3] 
+						&& firstColumn == colObjectives[0] 
+						&& secondColumn == colObjectives[1]
+						&& thirdColumn == colObjectives[2] 
+						&& fourthColumn == colObjectives[3]) {
+					for (int i = 15; i < 19; i++) {
+						JTextField textFields = textFieldList.get(i);
+						textFields.setBackground(Color.GREEN);
+					}
 				} else {
-					textFieldList.get(14).setBackground(Color.WHITE);
-					textFieldList.get(15).setBackground(Color.WHITE);
-					textFieldList.get(16).setBackground(Color.WHITE);
-					textFieldList.get(17).setBackground(Color.WHITE);
+					for (int i = 15; i < 19; i++) {
+						JTextField textField = textFieldList.get(i);
+						textField.setBackground(Color.WHITE);
+					}
 				}
 
 			}
@@ -209,8 +213,8 @@ public class Main {
 
 		// this arrays contains the textFields in the ArrayList where we should place
 		// the 8 random values
-		int[] textFieldsWithFirstBatch = { 3, 8, 13, 18 };
-		int[] textFieldsWithSecondBatch = { 19, 20, 21, 22 };
+		int[] textFieldsWithFirstBatch = { 4, 9, 14, 19 };
+		int[] textFieldsWithSecondBatch = { 20, 21, 22, 23 };
 
 		// adding the button and the textFields to the frame
 		for (JTextField textFields : textFieldList) {
