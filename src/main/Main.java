@@ -54,15 +54,6 @@ public class Main {
 
 		textField.setColumns(10);
 
-		// 8 random numbers that will become the player's objective
-		Random randomNumber = new Random();
-		int[] numbers = new int[8];
-
-		for (int i = 0; i < numbers.length; i++) {
-			int num = randomNumber.nextInt(11) + 5;
-			numbers[i] = num;
-		}
-
 		// generating the textFields for the inputs of the player
 		ArrayList<JTextField> textFieldList = new ArrayList<>();
 
@@ -76,14 +67,11 @@ public class Main {
 		// generating a button to check for the win
 
 		// changing color of Objectives to make it prettier
-		textFieldList.get(4).setBackground(Color.CYAN);
-		textFieldList.get(9).setBackground(Color.CYAN);
-		textFieldList.get(14).setBackground(Color.CYAN);
-		textFieldList.get(19).setBackground(Color.CYAN);
-		textFieldList.get(20).setBackground(Color.CYAN);
-		textFieldList.get(21).setBackground(Color.CYAN);
-		textFieldList.get(22).setBackground(Color.CYAN);
-		textFieldList.get(23).setBackground(Color.CYAN);
+		int[] cellsWithObjectives = {4, 9, 14, 19, 20, 21, 22, 23};
+		Color color = Color.CYAN;
+		for (int index : cellsWithObjectives) {
+		    textFieldList.get(index).setBackground(color);
+		}
 
 		JButton checkButton = new JButton("Check!");
 
@@ -143,11 +131,11 @@ public class Main {
 
 				// validating the first row
 
-				if (firstRow == rowObjectives[0] 
-						&& firstColumn == colObjectives[0] 
-						&& secondColumn == colObjectives[1]
-						&& thirdColumn == colObjectives[2] 
-						&& fourthColumn == colObjectives[3]) {
+				if (firstRow == rowObjectives[0] && firstColumn == colObjectives[0]
+						|| firstRow == rowObjectives[0] && secondColumn == colObjectives[1]
+						|| firstRow == rowObjectives[0] && thirdColumn == colObjectives[2]
+						|| firstRow == rowObjectives[0] && fourthColumn == colObjectives[3]) {
+
 					for (int i = 0; i < 4; i++) {
 						JTextField textFields = textFieldList.get(i);
 						textFields.setBackground(Color.GREEN);
@@ -159,11 +147,11 @@ public class Main {
 					}
 				}
 
-				if (secondRow == rowObjectives[1] 
-						&& firstColumn == colObjectives[0] 
-						&& secondColumn == colObjectives[1]
-						&& thirdColumn == colObjectives[2] 
-						&& fourthColumn == colObjectives[3]) {
+				if (secondRow == rowObjectives[1] && firstColumn == colObjectives[0]
+						|| secondRow == rowObjectives[1] && secondColumn == colObjectives[1]
+						|| secondRow == rowObjectives[1] && thirdColumn == colObjectives[2]
+						|| secondRow == rowObjectives[1] && fourthColumn == colObjectives[3]) {
+
 					for (int i = 5; i < 9; i++) {
 						JTextField textFields = textFieldList.get(i);
 						textFields.setBackground(Color.GREEN);
@@ -175,11 +163,11 @@ public class Main {
 					}
 				}
 
-				if (thirdRow == rowObjectives[2] 
-						&& firstColumn == colObjectives[0] 
-						&& secondColumn == colObjectives[1]
-						&& thirdColumn == colObjectives[2] 
-						&& fourthColumn == colObjectives[3]) {
+				if (thirdRow == rowObjectives[2] && firstColumn == colObjectives[0]
+						|| thirdRow == rowObjectives[2] && secondColumn == colObjectives[1]
+						|| thirdRow == rowObjectives[2] && thirdColumn == colObjectives[2]
+						|| thirdRow == rowObjectives[2] && fourthColumn == colObjectives[3]) {
+
 					for (int i = 10; i < 14; i++) {
 						JTextField textFields = textFieldList.get(i);
 						textFields.setBackground(Color.GREEN);
@@ -191,11 +179,10 @@ public class Main {
 					}
 				}
 
-				if (fourthRow == rowObjectives[3] 
-						&& firstColumn == colObjectives[0] 
-						&& secondColumn == colObjectives[1]
-						&& thirdColumn == colObjectives[2] 
-						&& fourthColumn == colObjectives[3]) {
+				if (fourthRow == rowObjectives[3] && firstColumn == colObjectives[0]
+						|| fourthRow == rowObjectives[3] && secondColumn == colObjectives[1]
+						|| fourthRow == rowObjectives[3] && thirdColumn == colObjectives[2]
+						|| fourthRow == rowObjectives[3] && fourthColumn == colObjectives[3]) {
 					for (int i = 15; i < 19; i++) {
 						JTextField textFields = textFieldList.get(i);
 						textFields.setBackground(Color.GREEN);
