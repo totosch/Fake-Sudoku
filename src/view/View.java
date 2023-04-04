@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.GridLayout;
+import javax.swing.JOptionPane;
 
 public class View {
 	private JFrame frame;
@@ -139,6 +140,28 @@ public class View {
 		int[] cellPositionOfResults = getCopyOfArraysOfResultsIndexes();
 		
 		changeBackgroundColorOfResultLabels(cellPositionOfResults, Color.CYAN);
+	}
+	
+	public void paintEntireGrid (Color color) {
+		for (int i = 0; i < listOfInputs.size(); i++) {
+			listOfInputs.get(i).setBackground(color);			
+		}
+	}
+	
+	public void showMessageDialog(String message) {
+		JOptionPane.showMessageDialog(null, message);
+	}
+	
+	public void setBackgroundOfRow(int rowIndex, Color color) {
+		for (int i = rowIndex * innerGridDimension; i < innerGridDimension; i++) {
+			listOfInputs.get(i).setBackground(color);
+		}
+	}
+	
+	public void setBackgroundOfColumn(int rowIndex, Color color) {
+		for (int i = rowIndex; i < rowIndex + innerGridDimension * (innerGridDimension - 1); i++) {
+			listOfInputs.get(i).setBackground(color);
+		}
 	}
 	
 	public void setBackgroundOfTextFieldByIndex(int index, Color color) {

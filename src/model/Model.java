@@ -100,9 +100,9 @@ public class Model {
 		}
 		
 		if (entity == ListOfCells.COLUMN) {
-			return columnOfExpectedResults.get(position - 1);
+			return columnOfExpectedResults.get(position);
 		}
 		
-		return rowOfExpectedResults.get(position - 1);
+		return rowOfExpectedResults.get(position);
 	}
 }

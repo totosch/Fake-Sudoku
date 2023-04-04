@@ -44,93 +44,100 @@ public class Presenter {
 	}
 	
 	class CheckListener implements ActionListener {
+		private boolean hasCompletedGame(boolean[] rowSuccessByIndex, boolean[] columnSuccessByIndex) {
+			for (int i = 0; i < view.getInnerGridDimension(); i++) {
+				if (!rowSuccessByIndex[i] || !columnSuccessByIndex[i]) {
+					return false;
+				}
+			}
+			
+			return true;
+		}
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// values of the 16 squares that the user has input
-			int innerGridDimension = view.getInnerGridDimension();
-
-			ArrayList<JTextField> listOfInputs = view.getListOfInputs();
-
-			int[] inputValues = new int[innerGridDimension * innerGridDimension];
-			for (int i = 0; i < inputValues.length; i++) {
-				inputValues[i] = Integer.parseInt(listOfInputs.get(i).getText());
-			}
-
-			// calculating the row's values
-
-			int[] rowSums = new int[innerGridDimension];
-			for (int i = 0; i < innerGridDimension; i++) {
-				int index = i * innerGridDimension;
-				for (int j = 0; j < innerGridDimension; j++) {
-					rowSums[i] += inputValues[index + j];
+			try {
+				int innerGridDimension = view.getInnerGridDimension();
+				
+				ArrayList<JTextField> listOfInputs = view.getListOfInputs();
+				
+				System.out.println("listOfInputs");
+				
+				int[] inputValues = new int[innerGridDimension * innerGridDimension];
+				for (int i = 0; i < inputValues.length; i++) {
+					inputValues[i] = Integer.parseInt(listOfInputs.get(i).getText());
 				}
-			}
-			
-			System.out.println(Arrays.toString(rowSums));
-
-			int firstRow = rowSums[0];
-			int secondRow = rowSums[1];
-			int thirdRow = rowSums[2];
-			int fourthRow = rowSums[3];
-
-			// calculating the column's values
-
-			int[] colSums = new int[innerGridDimension];
-			for (int i = 0; i < innerGridDimension; i++) {
-				for (int j = 0; j < innerGridDimension; j++) {
-					int index = j * innerGridDimension;
-					colSums[i] += inputValues[index + i];
+				
+				// calculating the row's values
+				
+				int[] rowSums = new int[innerGridDimension];
+				for (int i = 0; i < innerGridDimension; i++) {
+					int index = i * innerGridDimension;
+					for (int j = 0; j < innerGridDimension; j++) {
+						rowSums[i] += inputValues[index + j];
+					}
 				}
-			}
-			
-			System.out.println(Arrays.toString(colSums));
-			
-			int firstColumn = colSums[0];
-			int secondColumn = colSums[1];
-			int thirdColumn = colSums[2];
-			int fourthColumn = colSums[3];
-
-			// validating wip
-
-			// validating the first row
-			
-			int currentRowCheckingIndex = innerGridDimension;
-					
-			boolean doColumnsHaveCorrectValues = firstColumn == model.getExpectedResultFromCell(ListOfCells.ROW, 1)
-					&& secondColumn == model.getExpectedResultFromCell(ListOfCells.ROW, 2)
-					&& thirdColumn == model.getExpectedResultFromCell(ListOfCells.ROW, 3)
-					&& fourthColumn == model.getExpectedResultFromCell(ListOfCells.ROW, 4);
-
-			if (firstRow == model.getExpectedResultFromCell(ListOfCells.COLUMN, 1) && doColumnsHaveCorrectValues) {
-				for (int i = 0; i < currentRowCheckingIndex; i++) {
-					view.setBackgroundOfTextFieldByIndex(i, Color.GREEN);
+				
+				// calculating the column's values
+				
+				int[] colSums = new int[innerGridDimension];
+				for (int i = 0; i < innerGridDimension; i++) {
+					for (int j = 0; j < innerGridDimension; j++) {
+						int index = j * innerGridDimension;
+						colSums[i] += inputValues[index + i];
+					}
 				}
-			}
-			
-			if (secondRow == model.getExpectedResultFromCell(ListOfCells.COLUMN, 2) && doColumnsHaveCorrectValues) {
-				for (int i = currentRowCheckingIndex; i < currentRowCheckingIndex + innerGridDimension; i++) {
-					view.setBackgroundOfTextFieldByIndex(i, Color.GREEN);
+				
+				// validating wip
+				
+				// validating the first row
+				
+				
+				boolean[] rowSuccessByIndex = new boolean[innerGridDimension];
+				boolean[] columnSuccessByIndex = new boolean[innerGridDimension];
+				
+				for (int i = 0; i < innerGridDimension; i++) {
+					if (rowSums[i] == model.getExpectedResultFromCell(ListOfCells.COLUMN, i)) {
+						rowSuccessByIndex[i] = true;
+					}
 				}
-			}
-			
-			currentRowCheckingIndex += innerGridDimension;
-
-			if (thirdRow == model.getExpectedResultFromCell(ListOfCells.COLUMN, 3) && doColumnsHaveCorrectValues) {
-				for (int i = currentRowCheckingIndex; i < currentRowCheckingIndex * innerGridDimension; i++) {
-					view.setBackgroundOfTextFieldByIndex(i, Color.GREEN);
+				
+				for (int i = 0; i < innerGridDimension; i++) {
+					if (colSums[i] == model.getExpectedResultFromCell(ListOfCells.ROW, i)) {
+						columnSuccessByIndex[i] = true;
+					}
 				}
-			}
-			
-			currentRowCheckingIndex += innerGridDimension;
-
-			if (fourthRow == model.getExpectedResultFromCell(ListOfCells.COLUMN, 4) && doColumnsHaveCorrectValues) {
-				for (int i = currentRowCheckingIndex; i < currentRowCheckingIndex + innerGridDimension; i++) {
-					view.setBackgroundOfTextFieldByIndex(i, Color.GREEN);
+				
+//				for (int i = 0; i < innerGridDimension; i++) {
+//					if (rowSuccessByIndex[i]) {
+//						view.setBackgroundOfRow(i, Color.GREEN);
+//					} else {
+//						view.setBackgroundOfRow(i, Color.WHITE);
+//					}
+//					
+//					if (columnSuccessByIndex[i]) {
+//						view.setBackgroundOfColumn(i, Color.GREEN);
+//					} else {
+//						view.setBackgroundOfColumn(i, Color.WHITE);
+//					}
+//				}
+				
+				boolean hasCompletedGame = this.hasCompletedGame(rowSuccessByIndex, columnSuccessByIndex);
+				
+				if (hasCompletedGame) {
+					view.paintEntireGrid(Color.green);
+					view.showMessageDialog("enjoyeaste. Jboss grafana");
+				} else {
+					view.paintEntireGrid(Color.red);
 				}
+			} catch (Exception error) {
+				System.out.println("entro al catch");
+				view.showMessageDialog("bad enjoyer");
 			}
 		}
 		
 	}
 		
 }
+	
