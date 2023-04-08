@@ -1,9 +1,7 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -34,6 +32,7 @@ public class View {
 	JComboBox<String> dimensionsComboBox = new JComboBox<String>();
 
 	private Timer timer;
+	private int elapsedTime;
 	private int count;
 
 	public View() {
@@ -45,7 +44,7 @@ public class View {
 		frame.setBounds(100, 100, 680, 525);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		frame.setTitle("Enjoyer or not-enjoyer?!?! FIND OUT! STROMG!!!!");
+		frame.setTitle("Fake Sudoku");
 	}
 
 	public void initializeView() {
@@ -73,7 +72,21 @@ public class View {
 	}
 
 	public int getSelectedItemFromDimensionsBox() {
-		return Integer.parseInt((String) dimensionsComboBox.getSelectedItem());
+		switch ((String) dimensionsComboBox.getSelectedItem()) {
+			case "Facil": return 4;
+			case "Normal": return 5;
+			case "Díficil": return 6;
+		}
+		
+		return 4;
+	}
+	
+	private void setElapsedTime(int time) {
+		this.elapsedTime = time;
+	}
+	
+	public int getElapsedTime() {
+		return elapsedTime;
 	}
 
 	public void generateMenu() {
@@ -93,15 +106,15 @@ public class View {
 		dimensionsComboBox.setBounds(260, 249, 119, 21);
 		frame.getContentPane().add(dimensionsComboBox);
 
-		int[] comboBoxOptions = { 4, 5, 6 };
+		String[] comboBoxOptions = { "Facil", "Normal", "Díficil" };
 
 		for (int i = 0; i < comboBoxOptions.length; i++) {
-			dimensionsComboBox.addItem(Integer.toString(comboBoxOptions[i]));
+			dimensionsComboBox.addItem(comboBoxOptions[i]);
 		}
 
-		gameScreenChangerButton.setBounds(250, 379, 85, 21);
+		gameScreenChangerButton.setBounds(260, 379, 85, 21);
 		
-		gameScreenChangerButton.setText("dale");
+		gameScreenChangerButton.setText("Jugar");
 		gameScreenChangerButton.setHorizontalAlignment(SwingConstants.CENTER);//no se xq esto no anda
 		frame.getContentPane().add(gameScreenChangerButton);
 	}
@@ -187,19 +200,14 @@ public class View {
 	    timerTitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 	    JLabel timerLabel = new JLabel ("0 seconds");
 	    
-	    
-
-	    //porque 1000? porque esta en ms, entonces 1000ms = 1seg, no preguntes, lo googlie (no fue chatgpt)
-	    
 	    timer = new Timer(1000, new ActionListener() {
 	        public void actionPerformed(ActionEvent e) {
 	            count++;
+	            setElapsedTime(count);
 	            timerLabel.setText(count + " seconds");
 	        }
 	    });
 	    
-	    //mi problema aca es que lo agrego en la pantalla de menu, hoy mostrame como se llama el otro panel y es agregarlo ahi tambien y listo, o de hecho solo en ese
-	    //estaria bueno agregar la cantidad de count del for de aca arriba al mensaje de cuando ganas, asi te tira cuanto tardaste
 	    frame.getContentPane().add(timerTitleLabel);
 	    frame.getContentPane().add(timerLabel);
 	    timer.start();

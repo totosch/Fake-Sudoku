@@ -1,5 +1,9 @@
 package model;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -104,5 +108,28 @@ public class Model {
 		}
 		
 		return rowOfExpectedResults.get(position);
+	}
+	
+	public boolean manageNewHighScore(int newElapsedTime) throws IOException {
+		String srcDirectoryPath = System.getProperty("user.dir") + "/src";
+		String filePath = srcDirectoryPath + "/" + "highest_score.txt";
+		
+		BufferedReader fileReader = new BufferedReader(new FileReader(filePath));
+		
+		String currentHighestScore = fileReader.readLine();
+		
+		fileReader.close();
+		
+		if (Integer.parseInt(currentHighestScore) <= newElapsedTime) {
+			return false;
+		}
+		
+		FileWriter fileWriter = new FileWriter(filePath);
+			
+		fileWriter.write(Integer.toString(newElapsedTime));
+		
+		fileWriter.close();
+		
+		return true;
 	}
 }

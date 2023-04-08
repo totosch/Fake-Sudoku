@@ -62,14 +62,10 @@ public class Presenter {
 				
 				ArrayList<JTextField> listOfInputs = view.getListOfInputs();
 				
-				System.out.println("listOfInputs");
-				
 				int[] inputValues = new int[innerGridDimension * innerGridDimension];
 				for (int i = 0; i < inputValues.length; i++) {
 					inputValues[i] = Integer.parseInt(listOfInputs.get(i).getText());
 				}
-				
-				// calculating the row's values
 				
 				int[] rowSums = new int[innerGridDimension];
 				for (int i = 0; i < innerGridDimension; i++) {
@@ -79,8 +75,6 @@ public class Presenter {
 					}
 				}
 				
-				// calculating the column's values
-				
 				int[] colSums = new int[innerGridDimension];
 				for (int i = 0; i < innerGridDimension; i++) {
 					for (int j = 0; j < innerGridDimension; j++) {
@@ -88,10 +82,6 @@ public class Presenter {
 						colSums[i] += inputValues[index + i];
 					}
 				}
-				
-				// validating wip
-				
-				// validating the first row
 				
 				
 				boolean[] rowSuccessByIndex = new boolean[innerGridDimension];
@@ -109,35 +99,19 @@ public class Presenter {
 					}
 				}
 				
-//				for (int i = 0; i < innerGridDimension; i++) {
-//					if (rowSuccessByIndex[i]) {
-//						view.setBackgroundOfRow(i, Color.GREEN);
-//					} else {
-//						view.setBackgroundOfRow(i, Color.WHITE);
-//					}
-//					
-//					if (columnSuccessByIndex[i]) {
-//						view.setBackgroundOfColumn(i, Color.GREEN);
-//					} else {
-//						view.setBackgroundOfColumn(i, Color.WHITE);
-//					}
-//				}
-				
 				boolean hasCompletedGame = this.hasCompletedGame(rowSuccessByIndex, columnSuccessByIndex);
 				
 				if (hasCompletedGame) {
+					int elapsedTime = view.getElapsedTime();
+					boolean isNewHighScore = model.manageNewHighScore(view.getElapsedTime());
 					view.paintEntireGrid(Color.green);
-					view.showMessageDialog("enjoyeaste. Jboss grafana");
-				} else {
-					view.paintEntireGrid(Color.red);
+					view.showMessageDialog(isNewHighScore ? "Ganaste! Nuevo record: " + elapsedTime + " segundos" : "Ganaste!");
 				}
 			} catch (Exception error) {
-				System.out.println("entro al catch");
-				view.showMessageDialog("bad enjoyer");
+				view.showMessageDialog("Solo se permiten numeros para completar grilla");
 			}
 		}
 		
 	}
 		
 }
-	
