@@ -115,7 +115,7 @@ public class View {
 		gameScreenChangerButton.setBounds(260, 379, 85, 21);
 		
 		gameScreenChangerButton.setText("Jugar");
-		gameScreenChangerButton.setHorizontalAlignment(SwingConstants.CENTER);//no se xq esto no anda
+		gameScreenChangerButton.setHorizontalAlignment(SwingConstants.CENTER);
 		frame.getContentPane().add(gameScreenChangerButton);
 	}
 

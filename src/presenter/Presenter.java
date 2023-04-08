@@ -56,7 +56,6 @@ public class Presenter {
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// values of the 16 squares that the user has input
 			try {
 				int innerGridDimension = view.getInnerGridDimension();
 				
