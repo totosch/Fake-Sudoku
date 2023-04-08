@@ -3,6 +3,7 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -32,7 +33,6 @@ public class View {
 	private JButton gameScreenChangerButton = new JButton();
 	JComboBox<String> dimensionsComboBox = new JComboBox<String>();
 
-	private JLabel label;
 	private Timer timer;
 	private int count;
 
@@ -46,26 +46,6 @@ public class View {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setTitle("Enjoyer or not-enjoyer?!?! FIND OUT! STROMG!!!!");
-
-		//en este label pongo el tiempito 
-		
-		label = new JLabel("Time elapsed: 0 seconds");
-	    label.setHorizontalAlignment(SwingConstants.CENTER);
-
-	    //porque 1000? porque esta en ms, entonces 1000ms = 1seg, no preguntes, lo googlie (no fue chatgpt)
-	    
-	    timer = new Timer(1000, new ActionListener() {
-	        public void actionPerformed(ActionEvent e) {
-	            count++;
-	            label.setText("Tiempo empleado: " + count + " seconds");
-	        }
-	    });
-	    
-	    //mi problema aca es que lo agrego en la pantalla de menu, hoy mostrame como se llama el otro panel y es agregarlo ahi tambien y listo, o de hecho solo en ese
-	    //estaria bueno agregar la cantidad de count del for de aca arriba al mensaje de cuando ganas, asi te tira cuanto tardaste
-	    label.setBounds(0, 425, 680, 25);
-	    frame.getContentPane().add(label);
-	    timer.start();
 	}
 
 	public void initializeView() {
@@ -145,7 +125,7 @@ public class View {
 		setIndexesForColumnOfResults(innerGridDimension);
 		setIndexesForRowOfResults(innerGridDimension);
 
-		frame.getContentPane().setLayout(new GridLayout(fullScreenDimension, fullScreenDimension));
+		frame.getContentPane().setLayout(new GridLayout(fullScreenDimension + 1, fullScreenDimension));
 		frame.getContentPane().setBackground(Color.white);
 
 		for (int i = 0; i < (fullScreenDimension * fullScreenDimension) - 1; i++) {
@@ -172,6 +152,8 @@ public class View {
 		int[] cellPositionOfResults = getCopyOfArraysOfResultsIndexes();
 
 		changeBackgroundColorOfResultLabels(cellPositionOfResults, Color.CYAN);
+		
+		setTimer();
 	}
 
 	public void paintEntireGrid(Color color) {
@@ -198,6 +180,29 @@ public class View {
 
 	public void setBackgroundOfTextFieldByIndex(int index, Color color) {
 		listOfInputs.get(index).setBackground(color);
+	}
+	
+	private void setTimer() {
+		JLabel timerTitleLabel = new JLabel("Time elapsed:");
+	    timerTitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+	    JLabel timerLabel = new JLabel ("0 seconds");
+	    
+	    
+
+	    //porque 1000? porque esta en ms, entonces 1000ms = 1seg, no preguntes, lo googlie (no fue chatgpt)
+	    
+	    timer = new Timer(1000, new ActionListener() {
+	        public void actionPerformed(ActionEvent e) {
+	            count++;
+	            timerLabel.setText(count + " seconds");
+	        }
+	    });
+	    
+	    //mi problema aca es que lo agrego en la pantalla de menu, hoy mostrame como se llama el otro panel y es agregarlo ahi tambien y listo, o de hecho solo en ese
+	    //estaria bueno agregar la cantidad de count del for de aca arriba al mensaje de cuando ganas, asi te tira cuanto tardaste
+	    frame.getContentPane().add(timerTitleLabel);
+	    frame.getContentPane().add(timerLabel);
+	    timer.start();
 	}
 
 	private void changeBackgroundColorOfResultLabels(int[] cellPositionOfResults, Color color) {
