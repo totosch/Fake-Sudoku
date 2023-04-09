@@ -3,8 +3,8 @@ package presenter;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.swing.JTextField;
 
@@ -33,19 +33,20 @@ public class Presenter {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			int innerGridDimension = view.getSelectedItemFromDimensionsBox();	
+			int gridSize = view.getSelectedItemFromDimensionsBox();	
 	
-			model.setLengthOfListOfRandomNumbersAndGenerateStaticData(innerGridDimension);
+			model.setLengthOfListOfRandomNumbers(gridSize);
 			
-			view.prepareScreen(innerGridDimension);
+			view.prepareScreen(gridSize);
 			view.populateWithResults(model.getColumnOfExpectedResults(), model.getRowOfExpectedResults());
+			
 		}
 		
 	}
 	
 	class CheckListener implements ActionListener {
 		private boolean hasCompletedGame(boolean[] rowSuccessByIndex, boolean[] columnSuccessByIndex) {
-			for (int i = 0; i < view.getInnerGridDimension(); i++) {
+			for (int i = 0; i < view.getGridSize(); i++) {
 				if (!rowSuccessByIndex[i] || !columnSuccessByIndex[i]) {
 					return false;
 				}
@@ -57,57 +58,57 @@ public class Presenter {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			try {
-				int innerGridDimension = view.getInnerGridDimension();
+				int gridSize = view.getGridSize();
 				
-				ArrayList<JTextField> listOfInputs = view.getListOfInputs();
+				ArrayList<JTextField> inputFields = view.getListOfInputs();
 				
-				int[] inputValues = new int[innerGridDimension * innerGridDimension];
-				for (int i = 0; i < inputValues.length; i++) {
-					inputValues[i] = Integer.parseInt(listOfInputs.get(i).getText());
+				int[] gridValues = new int[gridSize * gridSize];
+				for (int i = 0; i < gridValues.length; i++) {
+					gridValues[i] = Integer.parseInt(inputFields.get(i).getText());
 				}
 				
-				int[] rowSums = new int[innerGridDimension];
-				for (int i = 0; i < innerGridDimension; i++) {
-					int index = i * innerGridDimension;
-					for (int j = 0; j < innerGridDimension; j++) {
-						rowSums[i] += inputValues[index + j];
+				int[] rowSums = new int[gridSize];
+				for (int i = 0; i < gridSize; i++) {
+					int index = i * gridSize;
+					for (int j = 0; j < gridSize; j++) {
+						rowSums[i] += gridValues[index + j];
 					}
 				}
 				
-				int[] colSums = new int[innerGridDimension];
-				for (int i = 0; i < innerGridDimension; i++) {
-					for (int j = 0; j < innerGridDimension; j++) {
-						int index = j * innerGridDimension;
-						colSums[i] += inputValues[index + i];
+				int[] colSums = new int[gridSize];
+				for (int i = 0; i < gridSize; i++) {
+					for (int j = 0; j < gridSize; j++) {
+						int index = j * gridSize;
+						colSums[i] += gridValues[index + i];
 					}
 				}
 				
 				
-				boolean[] rowSuccessByIndex = new boolean[innerGridDimension];
-				boolean[] columnSuccessByIndex = new boolean[innerGridDimension];
+				boolean[] isRowSuccessful = new boolean[gridSize];
+				boolean[] isColumnSuccessful = new boolean[gridSize];
 				
-				for (int i = 0; i < innerGridDimension; i++) {
+				for (int i = 0; i < gridSize; i++) {
 					if (rowSums[i] == model.getExpectedResultFromCell(ListOfCells.COLUMN, i)) {
-						rowSuccessByIndex[i] = true;
+						isRowSuccessful[i] = true;
 					}
 				}
 				
-				for (int i = 0; i < innerGridDimension; i++) {
+				for (int i = 0; i < gridSize; i++) {
 					if (colSums[i] == model.getExpectedResultFromCell(ListOfCells.ROW, i)) {
-						columnSuccessByIndex[i] = true;
+						isColumnSuccessful[i] = true;
 					}
 				}
 				
-				boolean hasCompletedGame = this.hasCompletedGame(rowSuccessByIndex, columnSuccessByIndex);
+				boolean isGameCompleted = this.hasCompletedGame(isRowSuccessful, isColumnSuccessful);
 				
-				if (hasCompletedGame) {
+				if (isGameCompleted) {
 					int elapsedTime = view.getElapsedTime();
 					boolean isNewHighScore = model.manageNewHighScore(view.getElapsedTime());
-					view.paintEntireGrid(Color.green);
+					view.paintEntireGrid(Color.cyan);
 					view.showMessageDialog(isNewHighScore ? "Ganaste! Nuevo record: " + elapsedTime + " segundos" : "Ganaste!");
 				}
 			} catch (Exception error) {
-				view.showMessageDialog("Solo se permiten numeros para completar grilla");
+				view.showMessageDialog("Solo se permiten numeros!");
 			}
 		}
 		

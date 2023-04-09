@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Model {
-	private int minNumber;
-	private int maxNumber;
-	private int lengthOfList;
-	private ArrayList<Integer> rowOfExpectedResults;
-	private ArrayList<Integer> columnOfExpectedResults;
+	private int minRandomNumber;
+	private int maxRandomNumber;
+	private int gridSize;
+	private ArrayList<Integer> expectedRowResults;
+	private ArrayList<Integer> expectedColumnResults;
 	private int dimensionOfGrid;
 	private static Random random = new Random();
 	
@@ -21,45 +21,45 @@ public class Model {
 		COLUMN
 	}
 	
-	public void setLengthOfListOfRandomNumbersAndGenerateStaticData (int lengthOfList) {
-		this.minNumber = lengthOfList + 1;
-		this.maxNumber = (lengthOfList + 1) * 3;
+	public void setLengthOfListOfRandomNumbers (int lengthOfList) {
+		this.minRandomNumber = lengthOfList + 1;
+		this.maxRandomNumber = (lengthOfList + 1) * 3;
 		this.dimensionOfGrid = lengthOfList;
-		this.rowOfExpectedResults = generateRandomNumbers(lengthOfList);
-		int sumOfRowResults = getSumOfListOfNumbers(this.rowOfExpectedResults);
-		this.columnOfExpectedResults = generateRandomNumbersMeetingSum(lengthOfList, sumOfRowResults);
+		this.expectedRowResults = generateRandomNumbers(lengthOfList);
+		int sumOfRowResults = getSumOfListOfNumbers(this.expectedRowResults);
+		this.expectedColumnResults = randomNumbersSum(lengthOfList, sumOfRowResults);
 	}
 
 	public ArrayList<Integer> getRowOfExpectedResults() {
-		return rowOfExpectedResults;
+		return expectedRowResults;
 	}
 	
 	public ArrayList<Integer> getColumnOfExpectedResults() {
-		return columnOfExpectedResults;
+		return expectedColumnResults;
 	}
 	
 	public int getLengthOfList() {
-		return lengthOfList;
+		return gridSize;
 	}
 
 	private ArrayList<Integer> generateRandomNumbers (int lengthOfList) {
 		ArrayList<Integer> randomNumbers = new ArrayList<Integer>(lengthOfList);
 		
 		for (int i = 0; i < lengthOfList; i++) {
-			randomNumbers.add(Model.random.nextInt(maxNumber - minNumber + 1) + minNumber);
+			randomNumbers.add(Model.random.nextInt(maxRandomNumber - minRandomNumber + 1) + minRandomNumber);
 		}
 
 		return randomNumbers;
 	}
 	
-	private ArrayList<Integer> generateRandomNumbersMeetingSum (int lengthOfList, int sum) {
+	private ArrayList<Integer> randomNumbersSum (int lengthOfList, int sum) {
 		ArrayList<Integer> randomNumbers = new ArrayList<Integer>(lengthOfList);
 		int sumOfNewArray = 0;
 		
-		while(!canRandomNumberListAddUpToGivenSum(sum, sumOfNewArray) || sumOfNewArray == 0) {
+		while(!isRandomListValid(sum, sumOfNewArray) || sumOfNewArray == 0) {
 			sumOfNewArray = 0;
 			for (int i = 0; i < (lengthOfList - 1); i++) {
-				randomNumbers.add(i, Model.random.nextInt(maxNumber - minNumber + 1) + minNumber);
+				randomNumbers.add(i, Model.random.nextInt(maxRandomNumber - minRandomNumber + 1) + minRandomNumber);
 				sumOfNewArray += randomNumbers.get(i);
 			}
 		}
@@ -71,7 +71,7 @@ public class Model {
 		return randomNumbers;
 	}
 	
-	private boolean canRandomNumberListAddUpToGivenSum(int sum, int newArraySum) {
+	private boolean isRandomListValid(int sum, int newArraySum) {
 		if (newArraySum > sum) {
 			return false;
 		}
@@ -82,17 +82,18 @@ public class Model {
 			return false;
 		}
 		
-		boolean differenceIsBiggerOrEqualThanMinNumber = difference >= minNumber;
-		boolean differenceIsSmallerOrEqualThanMaxNumber = difference <= maxNumber;
+		boolean isDifferenceGreaterThanOrEqualToMin = difference >= minRandomNumber;
+		boolean isDifferenceLessThanOrEqualToMax = difference <= maxRandomNumber;
+
 		
-		return differenceIsBiggerOrEqualThanMinNumber && differenceIsSmallerOrEqualThanMaxNumber;
+		return isDifferenceGreaterThanOrEqualToMin && isDifferenceLessThanOrEqualToMax;
 	}
 	
 	private int getSumOfListOfNumbers (ArrayList<Integer> list) {	
 		int sum = 0;
 		
-		for (Integer currentNumber: list) {
-			sum += currentNumber; 
+		for (Integer number: list) {
+			sum += number; 
 		}
 
 		return sum;
@@ -104,15 +105,15 @@ public class Model {
 		}
 		
 		if (entity == ListOfCells.COLUMN) {
-			return columnOfExpectedResults.get(position);
+			return expectedColumnResults.get(position);
 		}
 		
-		return rowOfExpectedResults.get(position);
+		return expectedRowResults.get(position);
 	}
 	
 	public boolean manageNewHighScore(int newElapsedTime) throws IOException {
 		String srcDirectoryPath = System.getProperty("user.dir") + "/src";
-		String filePath = srcDirectoryPath + "/" + "highest_score.txt";
+		String filePath = srcDirectoryPath + "/" + "highscore.txt";
 		
 		BufferedReader fileReader = new BufferedReader(new FileReader(filePath));
 		
@@ -124,10 +125,8 @@ public class Model {
 			return false;
 		}
 		
-		FileWriter fileWriter = new FileWriter(filePath);
-			
-		fileWriter.write(Integer.toString(newElapsedTime));
-		
+		FileWriter fileWriter = new FileWriter(filePath);			
+		fileWriter.write(Integer.toString(newElapsedTime));		
 		fileWriter.close();
 		
 		return true;

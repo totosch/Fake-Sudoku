@@ -20,13 +20,13 @@ import javax.swing.JOptionPane;
 
 public class View {
 	private JFrame frame;
-	private ArrayList<JLabel> columnOfResultsLabels = new ArrayList<JLabel>();
-	private ArrayList<JLabel> rowOfResultsLabels = new ArrayList<JLabel>();
-	private int innerGridDimension;
+	private ArrayList<JLabel> columnLabels = new ArrayList<JLabel>();
+	private ArrayList<JLabel> rowLabels = new ArrayList<JLabel>();
+	private int gridSize;
 	private int fullScreenDimension;
-	private ArrayList<JTextField> listOfInputs = new ArrayList<JTextField>();
-	private int[] columnOfResultsIndexes;
-	private int[] rowOfResultsIndexes;
+	private ArrayList<JTextField> inputFields = new ArrayList<JTextField>();
+	private int[] columnResultsIndexes;
+	private int[] rowResultsIndexes;
 	private JButton checkResultButton = new JButton("Check!");
 	private JButton gameScreenChangerButton = new JButton();
 	JComboBox<String> dimensionsComboBox = new JComboBox<String>();
@@ -63,12 +63,12 @@ public class View {
 		return gameScreenChangerButton;
 	}
 
-	public int getInnerGridDimension() {
-		return innerGridDimension;
+	public int getGridSize() {
+		return gridSize;
 	}
 
 	public ArrayList<JTextField> getListOfInputs() {
-		return listOfInputs;
+		return inputFields;
 	}
 
 	public int getSelectedItemFromDimensionsBox() {
@@ -132,7 +132,7 @@ public class View {
 	}
 
 	public void addComponentLayout(int innerGridDimension) {
-		this.innerGridDimension = innerGridDimension;
+		this.gridSize = innerGridDimension;
 		this.fullScreenDimension = innerGridDimension + 1;
 
 		setIndexesForColumnOfResults(innerGridDimension);
@@ -143,8 +143,8 @@ public class View {
 
 		for (int i = 0; i < (fullScreenDimension * fullScreenDimension) - 1; i++) {
 			if (isIncludedInResultIndexes(i)) {
-				ArrayList<JLabel> correspondingResultsList = isIndexInTheLastRow(i) ? rowOfResultsLabels
-						: columnOfResultsLabels;
+				ArrayList<JLabel> correspondingResultsList = isIndexInTheLastRow(i) ? rowLabels
+						: columnLabels;
 				JLabel label = new JLabel();
 				label.setHorizontalAlignment(SwingConstants.CENTER);
 				label.setFont(new Font(label.getFont().getName(), Font.BOLD, label.getFont().getSize()));
@@ -155,7 +155,7 @@ public class View {
 				JTextField textField = new JTextField();
 				textField.setHorizontalAlignment(SwingConstants.CENTER);
 				textField.setFont(new Font(textField.getFont().getName(), Font.BOLD, textField.getFont().getSize()));
-				listOfInputs.add(textField);
+				inputFields.add(textField);
 				frame.getContentPane().add(textField);
 			}
 		}
@@ -163,15 +163,17 @@ public class View {
 		frame.getContentPane().add(checkResultButton);
 
 		int[] cellPositionOfResults = getCopyOfArraysOfResultsIndexes();
-
-		changeBackgroundColorOfResultLabels(cellPositionOfResults, Color.CYAN);
+		
+		Color scoreColor = new Color(196, 77, 255);
+		changeBackgroundColorOfResultLabels(cellPositionOfResults, scoreColor);
 		
 		setTimer();
+		setHighScore();
 	}
 
 	public void paintEntireGrid(Color color) {
-		for (int i = 0; i < listOfInputs.size(); i++) {
-			listOfInputs.get(i).setBackground(color);
+		for (int i = 0; i < inputFields.size(); i++) {
+			inputFields.get(i).setBackground(color);
 		}
 	}
 
@@ -180,19 +182,19 @@ public class View {
 	}
 
 	public void setBackgroundOfRow(int rowIndex, Color color) {
-		for (int i = rowIndex * innerGridDimension; i < innerGridDimension; i++) {
-			listOfInputs.get(i).setBackground(color);
+		for (int i = rowIndex * gridSize; i < gridSize; i++) {
+			inputFields.get(i).setBackground(color);
 		}
 	}
 
 	public void setBackgroundOfColumn(int rowIndex, Color color) {
-		for (int i = rowIndex; i < rowIndex + innerGridDimension * (innerGridDimension - 1); i++) {
-			listOfInputs.get(i).setBackground(color);
+		for (int i = rowIndex; i < rowIndex + gridSize * (gridSize - 1); i++) {
+			inputFields.get(i).setBackground(color);
 		}
 	}
 
 	public void setBackgroundOfTextFieldByIndex(int index, Color color) {
-		listOfInputs.get(index).setBackground(color);
+		inputFields.get(index).setBackground(color);
 	}
 	
 	private void setTimer() {
@@ -212,29 +214,41 @@ public class View {
 	    frame.getContentPane().add(timerLabel);
 	    timer.start();
 	}
+	
+	private void setHighScore() {
+		JLabel empty = new JLabel("");
+		JLabel highscore = new JLabel("Highscore: ");
+		highscore.setHorizontalAlignment(SwingConstants.CENTER);
+		JLabel highscoreValue = new JLabel("50");
+		highscoreValue.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		frame.getContentPane().add(empty);
+		frame.getContentPane().add(highscore);
+		frame.getContentPane().add(highscoreValue);
+	}
 
 	private void changeBackgroundColorOfResultLabels(int[] cellPositionOfResults, Color color) {
 		for (int i = 0; i < cellPositionOfResults.length; i++) {
-			int indexForGivenList = i >= innerGridDimension ? i - innerGridDimension : i;
+			int indexForGivenList = i >= gridSize ? i - gridSize : i;
 			ArrayList<JLabel> correspondingResultsList = isIndexInTheLastRow(cellPositionOfResults[i])
-					? rowOfResultsLabels
-					: columnOfResultsLabels;
+					? rowLabels
+					: columnLabels;
 			correspondingResultsList.get(indexForGivenList).setBackground(color);
 		}
 	}
 
 	private int[] getCopyOfArraysOfResultsIndexes() {
-		int[] cellPositionOfResults = new int[innerGridDimension * 2];
+		int[] cellPositionOfResults = new int[gridSize * 2];
 
-		System.arraycopy(columnOfResultsIndexes, 0, cellPositionOfResults, 0, innerGridDimension);
-		System.arraycopy(rowOfResultsIndexes, 0, cellPositionOfResults, innerGridDimension, innerGridDimension);
+		System.arraycopy(columnResultsIndexes, 0, cellPositionOfResults, 0, gridSize);
+		System.arraycopy(rowResultsIndexes, 0, cellPositionOfResults, gridSize, gridSize);
 
 		return cellPositionOfResults;
 	}
 
 	private boolean isIncludedInResultIndexes(int index) {
-		boolean isIncludedInColumnOfResults = isIncludedInListOfIndexes(index, columnOfResultsIndexes);
-		boolean isIncludedInRowOfResults = isIncludedInListOfIndexes(index, rowOfResultsIndexes);
+		boolean isIncludedInColumnOfResults = isIncludedInListOfIndexes(index, columnResultsIndexes);
+		boolean isIncludedInRowOfResults = isIncludedInListOfIndexes(index, rowResultsIndexes);
 
 		return isIncludedInColumnOfResults || isIncludedInRowOfResults;
 	}
@@ -259,14 +273,14 @@ public class View {
 	}
 
 	private void populateColumnWithResults(ArrayList<Integer> results) {
-		for (int i = 0; i < rowOfResultsLabels.size(); i++) {
-			columnOfResultsLabels.get(i).setText(Integer.toString(results.get(i)));
+		for (int i = 0; i < rowLabels.size(); i++) {
+			columnLabels.get(i).setText(Integer.toString(results.get(i)));
 		}
 	}
 
 	private void populateRowWithResults(ArrayList<Integer> results) {
-		for (int i = 0; i < rowOfResultsLabels.size(); i++) {
-			rowOfResultsLabels.get(i).setText(Integer.toString(results.get(i)));
+		for (int i = 0; i < rowLabels.size(); i++) {
+			rowLabels.get(i).setText(Integer.toString(results.get(i)));
 		}
 	}
 
@@ -278,7 +292,7 @@ public class View {
 			indexes[i] = indexes[i - 1] + (lengthOfList + 1);
 		}
 
-		this.columnOfResultsIndexes = indexes;
+		this.columnResultsIndexes = indexes;
 	}
 
 	private void setIndexesForRowOfResults(int lengthOfList) {
@@ -290,6 +304,6 @@ public class View {
 			indexes[i] = indexes[i - 1] + 1;
 		}
 
-		this.rowOfResultsIndexes = indexes;
+		this.rowResultsIndexes = indexes;
 	}
 }

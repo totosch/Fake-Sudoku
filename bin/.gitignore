@@ -1,6 +1,4 @@
-/view/
 /model/
-/test.txt
-/highest_score.txt
-/main/
 /presenter/
+/highscore.txt
+/view/
