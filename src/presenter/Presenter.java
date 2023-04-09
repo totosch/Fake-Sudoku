@@ -34,11 +34,20 @@ public class Presenter {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			int gridSize = view.getSelectedItemFromDimensionsBox();	
+			
+	        int currentHighScore = 0;
+	        try {
+	            currentHighScore = model.getCurrentHighestScore();
+	        } catch (IOException ex) {
+	            ex.printStackTrace();
+	        }
+	        
 	
 			model.setLengthOfListOfRandomNumbers(gridSize);
 			
 			view.prepareScreen(gridSize);
 			view.populateWithResults(model.getColumnOfExpectedResults(), model.getRowOfExpectedResults());
+			view.setHighScoreValue(currentHighScore);
 			
 		}
 		

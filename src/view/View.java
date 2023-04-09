@@ -23,7 +23,7 @@ public class View {
 	private ArrayList<JLabel> columnLabels = new ArrayList<JLabel>();
 	private ArrayList<JLabel> rowLabels = new ArrayList<JLabel>();
 	private int gridSize;
-	private int fullScreenDimension;
+	private int fullGridSize;
 	private ArrayList<JTextField> inputFields = new ArrayList<JTextField>();
 	private int[] columnResultsIndexes;
 	private int[] rowResultsIndexes;
@@ -34,6 +34,8 @@ public class View {
 	private Timer timer;
 	private int elapsedTime;
 	private int count;
+	
+	private JLabel highscoreValue;
 
 	public View() {
 		initialize();
@@ -133,15 +135,15 @@ public class View {
 
 	public void addComponentLayout(int innerGridDimension) {
 		this.gridSize = innerGridDimension;
-		this.fullScreenDimension = innerGridDimension + 1;
+		this.fullGridSize = innerGridDimension + 1;
 
 		setIndexesForColumnOfResults(innerGridDimension);
 		setIndexesForRowOfResults(innerGridDimension);
 
-		frame.getContentPane().setLayout(new GridLayout(fullScreenDimension + 1, fullScreenDimension));
+		frame.getContentPane().setLayout(new GridLayout(fullGridSize + 1, fullGridSize));
 		frame.getContentPane().setBackground(Color.white);
 
-		for (int i = 0; i < (fullScreenDimension * fullScreenDimension) - 1; i++) {
+		for (int i = 0; i < (fullGridSize * fullGridSize) - 1; i++) {
 			if (isIncludedInResultIndexes(i)) {
 				ArrayList<JLabel> correspondingResultsList = isIndexInTheLastRow(i) ? rowLabels
 						: columnLabels;
@@ -215,17 +217,25 @@ public class View {
 	    timer.start();
 	}
 	
+	
 	private void setHighScore() {
-		JLabel empty = new JLabel("");
-		JLabel highscore = new JLabel("Highscore: ");
-		highscore.setHorizontalAlignment(SwingConstants.CENTER);
-		JLabel highscoreValue = new JLabel("50");
-		highscoreValue.setHorizontalAlignment(SwingConstants.CENTER);
-		
-		frame.getContentPane().add(empty);
-		frame.getContentPane().add(highscore);
-		frame.getContentPane().add(highscoreValue);
+	    JLabel empty = new JLabel("");
+	    JLabel highscore = new JLabel("Highscore: ");
+	    highscore.setHorizontalAlignment(SwingConstants.CENTER);
+
+	    frame.getContentPane().add(empty);
+	    frame.getContentPane().add(highscore);
+
+	    
 	}
+	
+	public void setHighScoreValue(int score) {
+	    highscoreValue = new JLabel("");
+	    highscoreValue.setHorizontalAlignment(SwingConstants.CENTER);
+	    highscoreValue.setText(Integer.toString(score));
+	    frame.getContentPane().add(highscoreValue);
+	}
+
 
 	private void changeBackgroundColorOfResultLabels(int[] cellPositionOfResults, Color color) {
 		for (int i = 0; i < cellPositionOfResults.length; i++) {
@@ -264,7 +274,7 @@ public class View {
 	}
 
 	private boolean isIndexInTheLastRow(int index) {
-		return (fullScreenDimension * fullScreenDimension) - index <= fullScreenDimension;
+		return (fullGridSize * fullGridSize) - index <= fullGridSize;
 	}
 
 	public void populateWithResults(ArrayList<Integer> columnResults, ArrayList<Integer> rowResults) {

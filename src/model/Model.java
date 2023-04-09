@@ -112,16 +112,11 @@ public class Model {
 	}
 	
 	public boolean manageNewHighScore(int newElapsedTime) throws IOException {
-		String srcDirectoryPath = System.getProperty("user.dir") + "/src";
-		String filePath = srcDirectoryPath + "/" + "highscore.txt";
+	    String srcDirectoryPath = System.getProperty("user.dir") + "/src";
+	    String filePath = srcDirectoryPath + "/" + "highscore.txt";
+		int currentHighestScore = this.getCurrentHighestScore();
 		
-		BufferedReader fileReader = new BufferedReader(new FileReader(filePath));
-		
-		String currentHighestScore = fileReader.readLine();
-		
-		fileReader.close();
-		
-		if (Integer.parseInt(currentHighestScore) <= newElapsedTime) {
+		if (currentHighestScore <= newElapsedTime) {
 			return false;
 		}
 		
@@ -131,4 +126,18 @@ public class Model {
 		
 		return true;
 	}
+	
+	public int getCurrentHighestScore() throws IOException {
+	    String srcDirectoryPath = System.getProperty("user.dir") + "/src";
+	    String filePath = srcDirectoryPath + "/" + "highscore.txt";
+	    
+	    BufferedReader fileReader = new BufferedReader(new FileReader(filePath));
+	    
+	    String currentHighestScore = fileReader.readLine();
+	    
+	    fileReader.close();
+	    
+	    return Integer.parseInt(currentHighestScore);
+	}
+
 }
